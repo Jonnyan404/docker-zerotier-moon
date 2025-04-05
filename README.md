@@ -2,13 +2,17 @@
 A docker image to create ZeroTier moon in one setp.
 **Update docker source to the latest version of zerotier**
 
-#### If there is a problem with centos7 operation, add `--rm --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --device=/dev/net/tun` after `docker run`
+#### If there is a problem with centos7 operation, add `--cap-add=NET_ADMIN --cap-add=SYS_ADMIN --device=/dev/net/tun` after `docker run`
 ## Usage
 
 ### Pull the image
 
 ```
+# April 5, 2025 The latest version is 1.14.2, supporting future upgrades.
 docker pull jonnyan404/zerotier-moon
+OR
+#Due to [license reasons](https://github.com/zerotier/ZeroTierOne/issues/2020), it will forever remain fixed at `1.10.2-r0`. If resolved in the future, updates will resume.
+docker pull jonnyan404/zerotier-moon:alpine
 ```
 
 ### Start a container

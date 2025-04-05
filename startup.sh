@@ -1,11 +1,11 @@
 #!/bin/sh
 
-export PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin
+# export PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin
 
-if [ ! -e /dev/net/tun ]; then
-    echo 'FATAL: cannot start ZeroTier One in container: /dev/net/tun not present.'
-    exit 1
-fi
+# if [ ! -e /dev/net/tun ]; then
+#     echo 'FATAL: cannot start ZeroTier One in container: /dev/net/tun not present.'
+#     exit 1
+# fi
 
 # usage ./startup.sh -4 1.2.3.4 -6 2001:abcd:abcd::1 -p 9993
 moon_port=9993 # default ZeroTier moon port
@@ -101,6 +101,7 @@ else
         
         echo "Starting ZeroTier with moon configuration..."
         moon_id=$(cat /var/lib/zerotier-one/moon.json | grep \"id\" | cut -d '"' -f4)
+        echo -e "Your ZeroTier moon id is \033[0;31m$moon_id\033[0m, you could orbit moon using \033[0;31m\"zerotier-cli orbit $moon_id $moon_id\"\033[0m"
         printf "Your ZeroTier moon id is \033[0;31m$moon_id\033[0m, you could orbit moon using \033[0;31m\"zerotier-cli orbit $moon_id $moon_id\"\033[0m"
         exec /usr/sbin/zerotier-one
 fi
