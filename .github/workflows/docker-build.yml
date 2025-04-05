@@ -16,7 +16,7 @@ on:
         description: '是否同时添加latest标签'
         type: boolean
         required: true
-        default: false    
+        default: true    
 
 env:
   REGISTRY_DOCKER: docker.io
@@ -42,21 +42,6 @@ jobs:
       - name: 设置Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: 准备自定义镜像标签
-        id: custom_tags
-        run: |
-          # 默认只使用版本号标签
-          TAGS_VALUE="${{ github.event.inputs.ZT_VERSION }}"
-          
-          # 如果选择了添加 latest 标签，则追加到标签列表
-          if [ "${{ github.event.inputs.USE_LATEST_TAG }}" = "true" ]; then
-            TAGS_VALUE="${TAGS_VALUE},latest"
-          fi
-          
-          # 输出最终标签列表
-          echo "最终标签: ${TAGS_VALUE}"
-          echo "TAGS=${TAGS_VALUE}" >> $GITHUB_OUTPUT
-
       - name: 提取元数据
         id: meta
         uses: docker/metadata-action@v4
@@ -65,7 +50,8 @@ jobs:
             ${{ env.REGISTRY_DOCKER }}/${{ env.IMAGE_NAME_DOCKER }}
             ${{ env.REGISTRY_GITHUB }}/${{ env.IMAGE_NAME_GITHUB }}
           tags: |
-            type=raw,value=${{ steps.custom_tags.outputs.TAGS }}
+            type=raw,value=${{ github.event.inputs.ZT_VERSION  }}
+            type=raw,value=latest,enable=${{ github.event.inputs.USE_LATEST_TAG == 'true' }}
 
       - name: 登录到DockerHub
         if: github.event_name != 'pull_request'
