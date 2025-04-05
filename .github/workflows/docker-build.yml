@@ -45,13 +45,17 @@ jobs:
       - name: 准备自定义镜像标签
         id: custom_tags
         run: |
-          # 始终添加 ZT_VERSION 作为标签
-          echo "TAGS=${{ github.event.inputs.ZT_VERSION }}" >> $GITHUB_OUTPUT
+          # 默认只使用版本号标签
+          TAGS_VALUE="${{ github.event.inputs.ZT_VERSION }}"
           
-          # 如果选择了添加 latest 标签，则添加
+          # 如果选择了添加 latest 标签，则追加到标签列表
           if [ "${{ github.event.inputs.USE_LATEST_TAG }}" = "true" ]; then
-            echo "TAGS=${{ github.event.inputs.ZT_VERSION }},latest" >> $GITHUB_OUTPUT
+            TAGS_VALUE="${TAGS_VALUE},latest"
           fi
+          
+          # 输出最终标签列表
+          echo "最终标签: ${TAGS_VALUE}"
+          echo "TAGS=${TAGS_VALUE}" >> $GITHUB_OUTPUT
 
       - name: 提取元数据
         id: meta
