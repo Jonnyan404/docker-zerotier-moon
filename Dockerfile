@@ -1,13 +1,23 @@
 ## NOTE: to retain configuration; mount a Docker volume, or use a bind-mount, on /var/lib/zerotier-one
-FROM debian:buster-slim as builder
+FROM debian:buster-slim AS builder
 
 ARG ZT_VERSION=1.14.2
 
-RUN apt-get update && apt-get install -y curl gnupg ca-certificates
-# 使用官方提供的 GPG 密钥方法
-RUN curl -s 'https://raw.githubusercontent.com/zerotier/ZeroTierOne/main/doc/contact%40zerotier.com.gpg' | gpg --dearmor -o /etc/apt/trusted.gpg.d/zerotier.gpg && \
-    echo "deb http://download.zerotier.com/debian/buster buster main" > /etc/apt/sources.list.d/zerotier.list && \
-    apt-get update && apt-get install -y zerotier-one=${ZT_VERSION}
+# 安装基本依赖
+RUN apt-get update && apt-get install -y curl gnupg ca-certificates wget apt-transport-https
+
+
+RUN curl -fsSL https://download.zerotier.com/debian/zerotier.gpg -o /etc/apt/trusted.gpg.d/zerotier.gpg || \
+    wget -q -O - https://raw.githubusercontent.com/zerotier/ZeroTierOne/master/doc/contact%40zerotier.com.gpg | gpg --dearmor > /etc/apt/trusted.gpg.d/zerotier.gpg
+
+
+RUN echo "deb https://download.zerotier.com/debian/buster buster main" > /etc/apt/sources.list.d/zerotier.list
+
+
+RUN apt-get update && apt-cache policy zerotier-one
+
+RUN apt-get install -y zerotier-one=${ZT_VERSION} || \
+    apt-get install -y zerotier-one
 
 FROM debian:buster-slim
 ARG ZT_VERSION=1.14.2
