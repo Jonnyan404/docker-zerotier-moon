@@ -1,7 +1,7 @@
 # update log
 
 > 2025年04月05日更新
-- 默认`latest`标签基于debian镜像,后续支持升级zerotier版本
+- 默认`latest`标签,基于debian镜像,后续支持升级zerotier版本
 - 增加`alpine`标签,基于alpine镜像,如无意外zerotier版本将固定在`1.10.2-r0`
 - 支持多CPU架构:amd64/arm64/armv7
 
