@@ -1,3 +1,5 @@
+2025年04月05日更新 支持多CPU架构:amd64/arm64/armv7
+
 # docker-zerotier-moon
 A docker image to create ZeroTier moon in one setp.
 **Update docker source to the latest version of zerotier**
