@@ -43,16 +43,16 @@ When creating a new container, a new moon id will be generated. To persist the i
 
 `docker-compose.yml` example:
 
-```
+```yml
 version: "3"
 
 services:
   zerotier-moon:
-    cap_add:
-        - NET_ADMIN
-        - SYS_ADMIN
-    devices:
-        - /dev/net/tun
+#    cap_add:
+#        - NET_ADMIN
+#        - SYS_ADMIN
+#    devices:
+#        - /dev/net/tun
     image: jonnyan404/zerotier-moon
     container_name: "zerotier-moon"
     restart: always
