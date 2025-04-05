@@ -28,16 +28,48 @@ docker pull jonnyan404/zerotier-moon:alpine
 docker run --name zerotier-moon -d --restart always -p 9993:9993/udp jonnyan404/zerotier-moon -4 1.2.3.4
 ```
  
-Replace `1.2.3.4` with your moon's IP.
+- Replace `1.2.3.4` with your moon's IP.
 
-To show your moon id, run
-
+- To show your moon id, run
 ```
 docker logs zerotier-moon
 ```
 
 **Notice:**
 When creating a new container, a new moon id will be generated. To persist the identity when creating a new container, see **Mount ZeroTier conf folder** below.
+
+
+# Docker Compose
+
+`docker-compose.yml` example:
+
+```
+version: "3"
+
+services:
+  zerotier-moon:
+    cap_add:
+        - NET_ADMIN
+        - SYS_ADMIN
+    devices:
+        - /dev/net/tun
+    image: jonnyan404/zerotier-moon
+    container_name: "zerotier-moon"
+    restart: always
+    ports:
+      - "9993:9993/udp"
+    volumes:
+      - ./config:/var/lib/zerotier-one
+    command: -4 1.2.3.4
+```
+
+- Replace `1.2.3.4` with your moon's IPv4 address.
+
+- To show your moon id, run
+```
+docker-compose logs
+```
+
 
 ## Advanced usage
 
