@@ -103,5 +103,21 @@ else
         moon_id=$(cat /var/lib/zerotier-one/moon.json | grep \"id\" | cut -d '"' -f4)
         echo -e "Your ZeroTier moon id is \033[0;31m$moon_id\033[0m, you could orbit moon using \033[0;31m\"zerotier-cli orbit $moon_id $moon_id\"\033[0m"
         printf "Your ZeroTier moon id is \033[0;31m$moon_id\033[0m, you could orbit moon using \033[0;31m\"zerotier-cli orbit $moon_id $moon_id\"\033[0m"
+        
+        # 新增：生成移动端支持信息
+        moon_file=$(ls /var/lib/zerotier-one/moons.d/*.moon)
+        base64_encode=$(base64 -w 0 "$moon_file")
+        echo ""
+        echo "移动端支持 (Mobile Support):"
+        echo "选项 1: 生成自定义 URL (Option 1: Generate custom URL)"
+        echo "在桌面浏览器打开以下 URL 生成 QR 码，然后用手机 ZeroTier App 扫描添加："
+        echo "https://joinzt.com/addplanet?v=1&planet=$base64_encode"
+        echo ""
+        echo "选项 2: 直接传输文件 (Option 2: Direct file transfer)"
+        echo "将以下 base64 编码的 Moon 文件通过邮件/笔记发送到手机，然后在 ZeroTier App 的“设置”中选择“添加 Planet 文件”并粘贴："
+        echo "$base64_encode"
+        echo ""
+        echo "注意：客户端加入网络后，使用 'zerotier-cli peers' 检查 Moon 是否在线。"
+        
         exec /usr/sbin/zerotier-one
 fi
