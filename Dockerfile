@@ -23,7 +23,7 @@ LABEL description="Containerized ZeroTier One for use on CoreOS or other Docker-
 # ZeroTier relies on UDP port 9993
 EXPOSE 9993/udp
 
-RUN apt-get update && apt-get install -y --no-install-recommends iproute2 iputils-ping libssl3t64 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends iproute2 iputils-ping libssl3t64 procps && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /var/lib/zerotier-one
 COPY --from=builder /usr/sbin/zerotier-cli /usr/sbin/zerotier-cli
 COPY --from=builder /usr/sbin/zerotier-idtool /usr/sbin/zerotier-idtool
