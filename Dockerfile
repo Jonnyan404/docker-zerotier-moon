@@ -7,11 +7,8 @@ ARG ZT_VERSION=1.14.2
 RUN apt-get update && apt-get install -y curl gnupg ca-certificates wget apt-transport-https
 
 
-RUN curl -fsSL https://download.zerotier.com/debian/zerotier.gpg -o /etc/apt/trusted.gpg.d/zerotier.gpg || \
-    wget -q -O - https://raw.githubusercontent.com/zerotier/ZeroTierOne/master/doc/contact%40zerotier.com.gpg | gpg --dearmor > /etc/apt/trusted.gpg.d/zerotier.gpg
-
-
-RUN echo "deb https://download.zerotier.com/debian/buster buster main" > /etc/apt/sources.list.d/zerotier.list
+RUN curl -s 'https://raw.githubusercontent.com/zerotier/ZeroTierOne/main/doc/contact%40zerotier.com.gpg' | gpg --import && \
+    if z=$(curl -s 'https://install.zerotier.com/' | gpg); then echo "$z" | bash; fi
 
 
 RUN apt-get update && apt-cache policy zerotier-one
@@ -20,9 +17,7 @@ RUN apt-get install -y zerotier-one=${ZT_VERSION} || \
     apt-get install -y zerotier-one
 
 FROM debian:buster-slim
-ARG ZT_VERSION=1.14.2
 LABEL author="Jonnyan404"
-LABEL version="${ZT_VERSION}"
 LABEL description="Containerized ZeroTier One for use on CoreOS or other Docker-only Linux hosts."
 
 # ZeroTier relies on UDP port 9993
